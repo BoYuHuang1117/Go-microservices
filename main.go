@@ -36,7 +36,8 @@ func main() {
 
 		err := s.ListenAndServe()
 		if err != nil {
-			l.Fatal(err)
+			l.Printf("Error starting server: %s\n", err)
+			os.Exit(1)
 		}
 	}()
 
@@ -48,6 +49,6 @@ func main() {
 	sig := <-sigChan
 	l.Println("Received terminate, graceful shutdown", sig)
 
-	tc, _ := context.WithTimeout(context.Background(), 30*time.Second)
-	s.Shutdown(tc)
+	ctx, _ := context.WithTimeout(context.Background(), 30*time.Second)
+	s.Shutdown(ctx)
 }
